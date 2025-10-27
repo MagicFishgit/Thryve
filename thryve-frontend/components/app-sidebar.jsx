@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import {
+  IconArrowNarrowUp,
   IconCamera,
   IconChartBar,
   IconDashboard,
@@ -32,6 +33,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Ruge_Boogie } from "next/font/google"
 
 const data = {
   user: {
@@ -160,8 +162,8 @@ export function AppSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <IconArrowNarrowUp color="#14b8a6" className="!size-5" />
+                <span className="text-base font-semibold">Thryve</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
