@@ -4,20 +4,16 @@ import * as React from "react"
 import {
   IconArrowNarrowUp,
   IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
+  IconCoins,
   IconFileAi,
   IconFileDescription,
-  IconFileWord,
-  IconFolder,
   IconHelp,
-  IconInnerShadowTop,
   IconListDetails,
-  IconReport,
+  IconPackage,
   IconSearch,
   IconSettings,
-  IconUsers,
+  IconFileAnalyticsFilled,
+  IconDashboard,
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -33,39 +29,35 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Ruge_Boogie } from "next/font/google"
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "admin",
+    email: "admin@example",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
     {
+    
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
-      url: "#",
+    
+      title: "Categories",
+      url: "/dashboard/categories",
       icon: IconListDetails,
     },
     {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
+      title: "Products",
+      url: "/dashboard/products",
+      icon: IconPackage,
     },
     {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
+      title: "Sales",
+      url: "/dashboard/sales",
+      icon: IconCoins,
     },
   ],
   navClouds: [
@@ -135,19 +127,19 @@ const data = {
   ],
   documents: [
     {
-      name: "Data Library",
+      name: "Today's Sales",
       url: "#",
-      icon: IconDatabase,
+      icon: IconFileAnalyticsFilled,
     },
     {
-      name: "Reports",
+      name: "Weekly Sales",
       url: "#",
-      icon: IconReport,
+      icon: IconFileAnalyticsFilled,
     },
     {
-      name: "Word Assistant",
+      name: "Monthly Sales",
       url: "#",
-      icon: IconFileWord,
+      icon: IconFileAnalyticsFilled,
     },
   ],
 }
