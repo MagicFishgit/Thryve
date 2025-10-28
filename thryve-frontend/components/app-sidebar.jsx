@@ -33,7 +33,7 @@ import {
 const data = {
   user: {
     name: "admin",
-    email: "admin@example",
+    email: "admin@orangeorange.co.za",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
@@ -111,34 +111,34 @@ const data = {
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/dashboard/settings",
       icon: IconSettings,
     },
     {
       title: "Get Help",
-      url: "#",
+      url: "/dashboard/help",
       icon: IconHelp,
     },
     {
       title: "Search",
-      url: "#",
+      url: "dashboard/search",
       icon: IconSearch,
     },
   ],
   documents: [
     {
       name: "Today's Sales",
-      url: "#",
+      url: "/dashboard/reports/today",
       icon: IconFileAnalyticsFilled,
     },
     {
       name: "Weekly Sales",
-      url: "#",
+      url: "/dashboard/reports/weekly",
       icon: IconFileAnalyticsFilled,
     },
     {
       name: "Monthly Sales",
-      url: "#",
+      url: "/dashboard/reports/monthly",
       icon: IconFileAnalyticsFilled,
     },
   ],

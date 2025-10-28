@@ -18,6 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import Link from "next/link";
 
 export function NavDocuments({
   items
@@ -38,12 +39,14 @@ export function NavDocuments({
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
+        <Link href="/dashboard/reports">
         <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
             <IconDots className="text-sidebar-foreground/70" />
             <span>More</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
+        </Link>
       </SidebarMenu>
     </SidebarGroup>
   );
