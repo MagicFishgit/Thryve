@@ -13,8 +13,9 @@ const axiosInstance = axios.create({
 // Add a request interceptor to include the authorization token
 axiosInstance.interceptors.request.use( async (config) => {
     const session = await getSession();
-    if (session?.user?.jwt) {
-        config.headers['Authorization'] = `Bearer ${session.user.jwt}`;
+
+    if (session?.jwt) {
+        config.headers['Authorization'] = `Bearer ${session.jwt}`;
     }
     return config;
 });
@@ -29,3 +30,4 @@ axiosInstance.interceptors.response.use(
     });
 
 export default axiosInstance;
+    
