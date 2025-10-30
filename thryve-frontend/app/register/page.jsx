@@ -15,6 +15,8 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import axios from "axios";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -35,14 +37,37 @@ export default function RegisterPage() {
     e.preventDefault();
     setLoading(true);
 
-    // TODO: replace with your real register call
-    // const res = await fetch("/api/register", { method: "POST", body: JSON.stringify(formData) });
-    // if (res.ok) { router.push("/dashboard"); } else { /* show toast */ }
+    try{
+      //Step 1: Register user only with username, email and password. Apparently because something to do with strapi not accepting post requests for custom fields will investigate later.
+      const registerRes = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/register`, {
+        username: formData.email,
+        email: formData.email,
+        password: formData.password,
+      });
 
-    setTimeout(() => {
+      const jwt = registerRes.data.jwt;
+      const userId = registerRes.data.user.id;
+
+      //Step 2: Update the user with firstName and lastName.
+      await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${userId}`, {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      }, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+
+      if (!registerRes?.error) {
+        toast.success("Registration successful!");
+        router.replace("/login");
+      }
+
+    }catch(error){
+      toast.error(error?.response?.data?.error?.message || "Registration failed. Please try again.");
+    }finally{
       setLoading(false);
-      router.push("/dashboard");
-    }, 600);
+    }
   };
 
   return (
