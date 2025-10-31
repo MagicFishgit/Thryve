@@ -30,6 +30,17 @@ jobs:
           script: |
             cd /var/www/projects/Thryve
             git pull origin main
-            cd thryve-frontend && npm install && npm run build
-            cd ../thryve-strapi-backend && npm install
+
+            # Frontend build
+            cd thryve-frontend
+            npm install
+            npm run build
+
+            # Backend clean install and rebuild
+            cd ../thryve-strapi-backend
+            rm -rf node_modules
+            npm install
+            npm rebuild better-sqlite3
+
+            # Restart services
             sudo systemctl restart thryve-frontend thryve-strapi-backend
