@@ -31,5 +31,5 @@ jobs:
             cd /var/www/projects/Thryve
             git pull origin main
             cd thryve-frontend && npm install && npm run build
-            cd ../thryve-strapi-backend && npm install --force
+            cd ../thryve-strapi-backend && npm install
             sudo systemctl restart thryve-frontend thryve-strapi-backend
