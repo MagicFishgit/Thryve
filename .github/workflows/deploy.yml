@@ -14,44 +14,51 @@ jobs:
 
       - name: Read Node version from .nvmrc
         id: node_version
+        # Note: This step is actually only useful for the runner, but kept for clarity 
+        # that the version is being identified. The version on the server will be 
+        # handled by 'nvm use'.
         run: echo "NODE_VERSION=$(cat thryve-strapi-backend/.nvmrc)" >> $GITHUB_ENV
 
-      - name: Setup Node.js
+      - name: Setup Node.js on Runner (Not Server)
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Deploy to server
+      - name: Deploy and Build on Server
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-          set -e  # Exit immediately if any command fails
+            # Exit immediately if any command fails
+            set -e
 
-          cd /var/www/projects/Thryve
-          git pull origin main
+            # Navigate to the repository root
+            cd /var/www/projects/Thryve
+            git pull origin main
 
-          # Frontend build
-          cd thryve-frontend
-          npm install
-          npm run build
+            # --- Frontend Build ---
+            cd thryve-frontend
+            npm install
+            npm run build
 
-          # Backend dependencies & build
-          cd ../thryve-strapi-backend
-          rm -rf node_modules
+            # --- Backend Install ---
+            cd ../thryve-strapi-backend
+            rm -rf node_modules
 
-          # Manually source NVM
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          
-          nvm use
-          npm install
-          # If Strapi has a build step, add it here (e.g., npm run build)
-          
-          # DO NOT run 'npm run dev' or 'npm run start'.
-          # The systemd services will handle that.
+            # Source NVM manually for non-login shell access
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
+            # Use the version specified in the .nvmrc file
+            nvm use
+            
+            # Install dependencies
+            npm install
+            
+            # Note: Do NOT run 'npm run dev' or 'npm run start' here. 
+            # Your systemd service must handle starting the application.
 
-          # Restart services
-          sudo systemctl restart thryve-frontend thryve-strapi-backend
+            # --- Restart Services ---
+            sudo systemctl restart thryve-frontend thryve-strapi-backend
