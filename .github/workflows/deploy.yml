@@ -12,6 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Use Node.js version from .nvmrc
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
       - name: Deploy to server
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -22,5 +27,5 @@ jobs:
             cd /var/www/projects/Thryve
             git pull origin main
             cd thryve-frontend && npm install && npm run build
-            cd ../thryve-strapi-backend && npm install
+            cd ../thryve-strapi-backend && npm install --force
             sudo systemctl restart thryve-frontend thryve-strapi-backend
