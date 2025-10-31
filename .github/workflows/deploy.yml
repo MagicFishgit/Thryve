@@ -28,6 +28,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            script: |
             cd /var/www/projects/Thryve
             git pull origin main
 
@@ -39,9 +40,17 @@ jobs:
             # Backend clean install and rebuild
             cd ../thryve-strapi-backend
             rm -rf node_modules
-            nvm use
+            
+            # --- START FIX ---
+            # Manually source NVM before using it
+            # This assumes NVM is installed in the default location ($HOME/.nvm)
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            # --- END FIX ---
+            
+            nvm use  # This will now work
             npm install
-            npm run dev
+            npm run dev -- --watch # Use --watch if you want it to run in the background, otherwise the script might hang. Or use pm2
 
             # Restart services
             sudo systemctl restart thryve-frontend thryve-strapi-backend
