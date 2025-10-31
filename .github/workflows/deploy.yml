@@ -1,0 +1,26 @@
+name: Deploy Thryve
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/projects/Thryve
+            git pull origin main
+            cd thryve-frontend && npm install && npm run build
+            cd ../thryve-strapi-backend && npm install
+            sudo systemctl restart thryve-frontend thryve-strapi-backend
