@@ -38,37 +38,26 @@ export default function RegisterPage() {
     setLoading(true);
 
     try{
-      //Step 1: Register user only with username, email and password. Apparently because something to do with strapi not accepting post requests for custom fields will investigate later.
-      const registerRes = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/register`, {
-        username: formData.email,
-        email: formData.email,
-        password: formData.password,
-      });
-
-      const jwt = registerRes.data.jwt;
-      const userId = registerRes.data.user.id;
-
-      //Step 2: Update the user with firstName and lastName.
-      await axios.put(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/${userId}`, {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-      }, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-
-      if (!registerRes?.error) {
-        toast.success("Registration successful!");
-        router.replace("/login");
-      }
+        const registerRes = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/register`, {
+            username: formData.email,
+            email: formData.email,
+            password: formData.password,
+            
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+        });
+        
+        if (!registerRes?.error) {
+            toast.success("Registration successful!");
+            router.replace("/dashboard"); // Redirect to the home page or dashboard
+        }
 
     }catch(error){
-      toast.error(error?.response?.data?.error?.message || "Registration failed. Please try again.");
+        toast.error(error?.response?.data?.error?.message || "Registration failed. Please try again.");
     }finally{
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   return (
     <div className="relative h-dvh">
